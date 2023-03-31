@@ -261,58 +261,64 @@
 															Buscar
 														</button>
 													</div>
-													<table class="table">
-														<thead>
-															<th>Documento</th>
-															<th>Monto</th>
-															<th>Acción</th>
-														</thead>
-														<tbody *ngIf="!load_documento">
-															<tr
-																*ngFor="
-																	let item of documento
-																		| slice
-																			: (pageVariedad - 1) * pageSizeVariedad
-																			: (pageVariedad - 1) * pageSizeVariedad + pageSizeVariedad;
-																	let indice = index
-																"
-															>
-																<td>{{ item.documento }}</td>
-																<td>{{ item.valor | currency : 'USD' }}</td>
-																<td>
-																	<a
-																		style="cursor: pointer"
-																		*ngIf="item.valor >= 0.01"
-																		class="text-success"
-																		(click)="select_documento(item)"
-																		>[Seleccionar]</a
-																	>
-																	<button
-																		type="button"
-																		*ngIf="item.valor <= 0.009"
-																		class="text-success"
-																		disabled
-																	>
-																		[No Selecionable]
-																	</button>
-																</td>
-															</tr>
-														</tbody>
-														<tbody *ngIf="load_documento">
-															<tr>
-																<td colspan="2" class="text-center">
-																	<div class="spinner-border" role="status">
-																		<span class="visually-hidden"></span>
-																	</div>
-																</td>
-															</tr>
-														</tbody>
-													</table>
+													<div class="table-responsive">
+														<table class="table">
+															<thead>
+																<th>Documento</th>
+																<th>Monto</th>
+																<th>Acción</th>
+															</thead>
+															<tbody *ngIf="!load_documento">
+																<tr
+																	*ngFor="
+																		let item of documento
+																			| slice
+																				: (pageVariedad - 1) * pageSizeVariedad
+																				: (pageVariedad - 1) * pageSizeVariedad + pageSizeVariedad;
+																		let indice = index
+																	"
+																>
+																	<td>{{ item.documento }}</td>
+																	<td>{{ item.valor | currency : 'USD' }}</td>
+																	<td>
+																		<a
+																			style="cursor: pointer"
+																			*ngIf="item.valor >= 0.01"
+																			class="text-success"
+																			(click)="select_documento(item)"
+																			>[Seleccionar]</a
+																		>
+																		<button
+																			type="button"
+																			*ngIf="item.valor <= 0.009"
+																			class="text-success"
+																			disabled
+																		>
+																			[No Selecionable]
+																		</button>
+																	</td>
+																</tr>
+															</tbody>
+															<tbody *ngIf="load_documento">
+																<tr>
+																	<td colspan="2" class="text-center">
+																		<div class="spinner-border" role="status">
+																			<span class="visually-hidden"></span>
+																		</div>
+																	</td>
+																</tr>
+															</tbody>
+															
+														</table>
+													</div>
+												
+													
 												</div>
 												<div class="modal-footer">
 													<ngb-pagination
 														[(page)]="pageVariedad"
 														[pageSize]="pageSizeVariedad"
+														[maxSize]="7"
 														[collectionSize]="documento.length"
 													></ngb-pagination>
 												</div>
