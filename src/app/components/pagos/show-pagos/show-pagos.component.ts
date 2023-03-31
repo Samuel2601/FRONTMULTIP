@@ -219,7 +219,7 @@ export class ShowPagosComponent implements OnInit {
 		console.log("registro",this.registro);
 
 		if(this.error_constru==''){
-/*
+
 		this._adminService
 			.marcar_finalizado_orden(this.pago._id,this.registro,this.token)
 			.subscribe((response) => {
@@ -249,7 +249,7 @@ export class ShowPagosComponent implements OnInit {
 					location.reload();
 				}, 1000);
 			});
-			*/
+			
 		}else{
 			iziToast.show({
 				title: 'DANGER',
