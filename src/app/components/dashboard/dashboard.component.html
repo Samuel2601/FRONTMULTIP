@@ -1,0 +1,1159 @@
+<app-sidebar></app-sidebar>
+<ng-container *ngIf="rol != undefined ">
+	<div class="main-content">
+		<div class="container-fluid">
+			<div class="row justify-content-center">
+				<div class="col-12 col-lg-12 col-xl-10">
+					<!-- Header -->
+					<div class="header mt-md-5">
+						<div class="header-body">
+							<div class="row align-items-center">
+								<div class="col">
+									<!-- Pretitle -->
+									<h6 class="header-pretitle">Reportes</h6>
+
+									<!-- Title -->
+									<h1 class="header-title">Panel de estados</h1>
+								</div>
+							</div>
+							<!-- / .row -->
+							<div class="row align-items-center">
+								<div class="col">
+									<!-- Nav -->
+									<ul class="nav nav-tabs nav-overflow header-tabs">
+										<li class="nav-item" disabled>
+											<a
+												*ngIf="!load_ventas"
+												class="nav-link"
+												style="cursor: pointer"
+												(click)="estadoventas()"
+											>
+												PAGOS
+											</a>
+											<a
+												*ngIf="load_ventas"
+												class="nav-link active"
+												style="cursor: no-drop; background: rgba(255, 255, 255, 0.365)"
+											>
+												PAGOS
+											</a>
+										</li>
+										<li class="nav-item">
+											<a
+												*ngIf="!load_documentos"
+												class="nav-link"
+												style="cursor: pointer"
+												(click)="estadodocumento()"
+											>
+												DOCUMENTOS
+											</a>
+											<a
+												*ngIf="load_documentos"
+												class="nav-link active"
+												style="cursor: no-drop; background: rgba(255, 255, 255, 0.365)"
+											>
+												DOCUMENTOS
+											</a>
+										</li>
+										<li class="nav-item">
+											<a
+												*ngIf="!load_estudiantes"
+												class="nav-link"
+												style="cursor: pointer"
+												(click)="estadoestudiante()"
+											>
+												ESTUDIANTES
+											</a>
+											<a
+												*ngIf="load_estudiantes"
+												class="nav-link active"
+												style="cursor: no-drop; background: rgba(255, 255, 255, 0.365)"
+											>
+												ESTUDIANTES
+											</a>
+										</li>
+										<li class="nav-item" *ngIf="rol == 'admin'">
+											<a
+												*ngIf="!load_administrativo"
+												class="nav-link"
+												style="cursor: pointer"
+												(click)="estadoadministrativo()"
+											>
+												ADMINISTRATIVO
+											</a>
+											<a
+												*ngIf="load_administrativo"
+												class="nav-link active"
+												style="cursor: no-drop; background: rgba(255, 255, 255, 0.365)"
+											>
+												ADMINISTRATIVO
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Ventas-->
+					<div *ngIf="load_ventas == true">
+						<!-- Alert -->
+						<div class="alert alert-danger" *ngIf="ventas.length == 0 && load_data_est==false">
+							<i class="fe fe-info mr-1"></i> No tienes Pagos
+						</div>
+						<ng-container *ngIf="load_data_est == true ">
+							<div class="card-body" style="cursor: progress">
+								<div class="row">
+									<div class="col-12 text-center">
+										<div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+											<span class="visually-hidden"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</ng-container>
+
+						<div class="card-body">
+							<div class="row">
+								<div class="col-12">
+									<canvas
+										id="myChart"
+										width="20%"
+										height="5%"
+										style="display: block; box-sizing: border-box; height: 35px; width: 75px"
+									></canvas>
+								</div>
+							</div>
+						</div>
+						<ng-container *ngIf="ventas.length != 0">
+							<div class="row">
+								<div class="col-12 col-md-6">
+									<!-- Card -->
+									<div class="card">
+										<div class="card-body">
+											<div class="row align-items-center">
+												<div class="col">
+													<!-- Title -->
+													<h3 class="text-uppercase text-muted mb-2">
+														PAGOS DE {{ meses[auxfactual]  }}:
+														
+														<span class="h3 mb-0" style="color: black">
+															{{pagos[0].data[meses[auxfactual]] | number: '1.2'}}
+														</span>
+													</h3>
+
+													<!-- Heading -->
+												</div>
+											</div>
+											<!-- / .row -->
+										</div>
+									</div>
+								</div>
+
+								<div class="col-12 col-md-6">
+									<!-- Card -->
+									<div class="card">
+										<div class="card-body">
+											<div class="row align-items-center">
+												<div class="col">
+													<!-- Title -->
+													<h6 class="text-uppercase text-muted mb-1">
+														PAGOS ANUALES {{ faux | date : 'YYYY' }}:
+														<span class="h3 mb-0" style="color: black">
+															<br />
+															{{ totalfaux | number: '1.2'  }}
+														</span>
+													</h6>
+
+													<!-- Heading -->
+												</div>
+
+												<div class="col">
+													<!-- Title -->
+													<h6 class="text-uppercase text-muted mb-1">
+														PAGOS ANUALES {{ factual | date : 'YYYY' }}:
+														<span class="h3 mb-0" style="color: black">
+															<br />{{ totalfactual | number: '1.2'  }}
+														</span>
+													</h6>
+
+													<!-- Heading -->
+												</div>
+											</div>
+											<!-- / .row -->
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="card">
+								<div class="card-header">
+									<!-- Title -->
+									<h4 class="card-header-title">Pagos por Cursos</h4>
+									<select class="" [(ngModel)]="auxfactual"  (ngModelChange)="ordenarmes($event)" >
+										<ng-container *ngFor="let item of meses; let index = index" >
+											<option value="{{index}}" > {{item}}</option>
+										</ng-container>
+										
+									</select>
+								</div>
+								<div class="table-responsive">
+									<table class="table table-sm table-nowrap card-table">
+										<thead>
+											<tr>
+												<th>Curso</th>
+												<th>Valor</th>
+											</tr>
+										</thead>
+										<tbody class="font-size-base">
+											<ng-container
+												*ngFor="
+													let item of auxanio
+														| slice : (page - 1) * pageSize : (page - 1) * pageSize + pageSize
+												"
+											>
+											<!--*ngIf="item.data[auxfactual]!=0"-->
+												<tr >
+													<td>
+														<a class="text-primary">{{ item.label }} </a>
+													</td>
+													<td>
+														{{ item.data[auxfactual] | number: '1.2'  }}/{{ meses[auxfactual]  }}
+													</td>
+												</tr>
+											</ng-container>
+										</tbody>
+									</table>
+									<ngb-pagination
+										*ngIf="auxanio.length >= 1"
+										[(page)]="page"
+										[pageSize]="pageSize"
+										[maxSize]="10"
+										[rotate]="true"
+										[boundaryLinks]="true"
+										[collectionSize]="auxanio.length"
+									></ngb-pagination>
+								</div>
+							</div>
+						</ng-container>
+					</div>
+
+					<!-- Documentos-->
+					<div class="card" *ngIf="load_documentos == true">
+						<!-- Alert -->
+						<div class="alert alert-danger" *ngIf="documentos.length == 0 && load_data_est==false">
+							<i class="fe fe-info mr-1"></i> No tienes Documentos
+						</div>
+						<ng-container *ngIf="load_data_est == true ">
+							<div class="card-body" style="cursor: progress">
+								<div class="row">
+									<div class="col-12 text-center">
+										<div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+											<span class="visually-hidden"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</ng-container>
+
+						<div class="card-body">
+							<div class="row">
+								<div class="col-12">
+									<canvas
+										id="myChart2"
+										width="20%"
+										height="5%"
+										style="display: block; box-sizing: border-box; height: 35px; width: 75px"
+									></canvas>
+								</div>
+							</div>
+						</div>
+						<ng-container *ngIf="documentos.length != 0">
+							<ng-container *ngIf="!load_data_est">
+								<div class="row">
+									<div class="col-12 col-md-12">
+										<!-- Card -->
+										<div class="card">
+											<div class="card-body">
+												<div class="row align-items-center">
+													<div class="col">
+														<!-- Title -->
+														<h3 class="text-uppercase text-muted mb-2">
+															Valor sin Asignar del año:
+															<span class="h3 mb-0" style="color: black">
+																{{ sobrante | number: '1.2'  }}
+															</span>
+														</h3>
+
+														<!-- Heading -->
+													</div>
+												</div>
+												<!-- / .row -->
+											</div>
+										</div>
+									</div>
+								</div>
+							</ng-container>
+						</ng-container>
+						<div class="card-body" *ngIf="documentos.length != 0">
+							<div class="table-responsive">
+								<table class="table table-sm table-nowrap card-table">
+									<thead >
+										<th>N°</th>
+										<th>Documento</th>
+										<th>Cuenta</th>
+										<th>Valor</th>
+									</thead>
+									<tbody>
+										<tr *ngFor="let item of documentos| slice : (page - 1) * pageSize : (page - 1) * pageSize + pageSize;let index=index ">
+											<td>{{index+1}}</td>
+											<td>
+												{{item.documento}}
+											</td>
+											<td>
+												{{item.cuenta}}
+											</td>
+											<td>
+												{{item.valor| number: '1.2'}}
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<ngb-pagination
+										*ngIf="documentos.length >= 1"
+										[(page)]="page"
+										[pageSize]="pageSize"
+										[maxSize]="10"
+										[rotate]="true"
+										[boundaryLinks]="true"
+										[collectionSize]="documentos.length"
+									></ngb-pagination>
+							</div>
+						</div>
+
+					</div>
+					<!-- Estudiantes-->
+					<div class="card" *ngIf="load_estudiantes == true">
+						<ng-container>
+							<!-- Alert -->
+							<div class="alert alert-danger" *ngIf="estudiantes.length == 0">
+								<i class="fe fe-info mr-1"></i> No tienes Pagos realizados
+							</div>
+
+							<div class="card">
+								<div class="card-body">
+									<ul class="nav nav-pills nav-overflow header-tabs">
+										<ng-container *ngFor="let pen1 of config; let val = index">
+											<li class="nav-item" *ngIf="active != val">
+												<a class="nav-link" style="cursor: pointer" value="val" (click)="detalle_data(val)">
+													{{ pen1.label }}</a
+												>
+											</li>
+
+											<li class="nav-item active" *ngIf="active == val">
+												<a class="nav-link active" style="cursor: no-drop" value="val">
+													{{ pen1.label }}</a
+												>
+											</li>
+										</ng-container>
+									</ul>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="row">
+									<div class="col-12">
+										<canvas
+											id="myChart3"
+											width="20%"
+											height="5%"
+											style="display: block; box-sizing: border-box; height: 35px; width: 75px"
+										></canvas>
+									</div>
+								</div>
+							</div>
+							<ng-container *ngIf="estudiantes.length != 0">
+								<ng-container *ngIf="!load_data_est">
+									<div class="row">
+										<div class="col-12 col-md-12">
+											<!-- Card -->
+											<div class="card">
+												<div class="card-body">
+													<div class="row align-items-center">
+														<div class="col">
+															<!-- Title -->
+															<h3 class="text-uppercase text-muted mb-2">
+																Valor por pagar:
+																<span class="h3 mb-0" style="color: black">
+																	{{ porpagar | number: '1.2'  }}
+																</span>
+															</h3>
+															<h3 class="text-uppercase text-muted mb-2">
+																Valor Recaudado:
+																<span class="h3 mb-0" style="color: black">
+																	{{ pagado | number: '1.2'  }}
+																</span>
+															</h3>
+															<h3 class="text-uppercase text-muted mb-2">
+																Mese transcurridos:
+																<span class="h3 mb-0" style="color: black">
+																	{{ nmt }}
+																</span>
+															</h3>
+															<!-- Heading -->
+
+															<button
+																class="btn btn-primary text-white mr-3"
+																style="cursor: pointer"
+																(click)="exportTabletotal('Total')"
+															>
+																Descargar en PDF
+															</button>
+														</div>
+													</div>
+													<!-- / .row -->
+												</div>
+											</div>
+										</div>
+									</div>
+									<div id="Total">
+										<ng-container *ngIf="cursos != undefined">
+											<div class="card">
+												<div class="card-header">
+													<h3 class="card-header-title">
+														DETALLE ECONOMICO DE PENSIONES
+														<button
+															id="btncvs"
+															mat-button
+															(click)="exporter.exportTable('csv')"
+															class="btn btn-primary text-white mr-3"
+														>
+															CSV
+														</button>
+														<button
+															id="btnxlsx"
+															mat-button
+															(click)="exporter.exportTable('xlsx')"
+															class="btn btn-primary text-white mr-3"
+														>
+															Excel
+														</button>
+														<button
+															id="btnpdf"
+															mat-raised-button
+															class="btn btn-primary text-white mr-3"
+															(click)="exportTable('detalleeconomico',[])"
+														>
+															PDF
+														</button>
+													</h3>
+												</div>
+
+												<div class="table-responsive">
+													<table id="detalleeconomico" class="table table-sm table-nowrap card-table">
+														<ng-container>
+															<thead>
+																<th>Descripción</th>
+																<th *ngFor="let curso of cursos; let idcurso = index">
+																	{{ curso }}
+																</th>
+															</thead>
+															<tbody>
+																<tr *ngFor="let ct of deteconomico; let idxe = index">
+																	<th>{{ ct.label }}</th>
+																	<th *ngFor="let curso of cursos; let idcurso = index">
+																		<span *ngIf="idxe == 0">
+																			{{ ct.data[idcurso] }}
+																		</span>
+																		<span *ngIf="idxe != 0">
+																			{{ ct.data[idcurso] | number: '1.2'  }}
+																		</span>
+																	</th>
+																</tr>
+															</tbody>
+														</ng-container>
+													</table>
+												</div>
+
+												<div class="table-responsive">
+													<mat-table
+														id="detalle"
+														matTableExporter
+														[dataSource]="deteconomico"
+														#exporter="matTableExporter"
+														class="table table-sm table-nowrap card-table"
+														style="display: none"
+													>
+														<ng-container matColumnDef="descr">
+															<th mat-header-cell *matHeaderCellDef>Descripción</th>
+
+															<td mat-cell *matCellDef="let element">{{ element.label }}</td>
+														</ng-container>
+
+														<!-- Name Column -->
+														<ng-container *ngFor="let curso of cursos2; let idcurso = index">
+															<ng-container *ngIf="curso != 'descr'" matColumnDef="{{ curso }}">
+																<th mat-header-cell *matHeaderCellDef style="border: 1px solid">
+																	{{ curso }}
+																</th>
+
+																<td
+																	mat-cell
+																	*matCellDef="let element; let idec = index"
+																	style="text-align: center"
+																>
+																	<span *ngIf="idec == 0">
+																		{{ element.data[idcurso - 1] }}
+																	</span>
+																	<span *ngIf="idec != 0">
+																		{{ element.data[idcurso - 1] | number }}
+																	</span>
+																</td>
+															</ng-container>
+														</ng-container>
+
+														<tr mat-header-row *matHeaderRowDef="cursos2"></tr>
+														<tr mat-row *matRowDef="let row; columns: cursos2" style="width: 200px"></tr>
+													</mat-table>
+												</div>
+											</div>
+										</ng-container>
+
+										<ng-container *ngIf="cursos != undefined">
+											<ng-container *ngFor="let cuentas of cursos; let idx = index">
+												<div class="card" *ngIf="constpagospension != undefined">
+													<div class="card-header">
+														<!-- Title -->
+														<h4 class="card-header-title">
+															Curso: {{ cuentas }}
+															
+															<button
+																id="btncursos{{ cuentas }}"
+																mat-raised-button
+																class="btn btn-primary text-white mr-3"
+																(click)="exportTable(cuentas,[])"
+															>
+																<i class="fe fe-printer"> Impr.</i>
+															</button>
+														</h4>
+													</div>
+													<div class="table">
+														<table id="{{ cuentas }}" class="table table-sm table-nowrap card-table">
+															<thead>
+																<tr>
+																	<th>Curso</th>
+																	<th>N° de Estudiantes</th>
+																	<th>Valor Recaudado</th>
+																	<th>Valor por Cobrar</th>
+																	<th> Pago Matricula </th>
+																	<th> Por cobrar Matricula </th>
+																</tr>
+															</thead>
+															<tbody class="font-size-base" *ngIf="constpagospension != undefined">
+																<ng-container *ngFor="let ctpagos of constpagospension">
+																	<tr
+																		*ngIf="
+																			ctpagos.label == cuentas + 'A' ||
+																			ctpagos.label == cuentas + 'B' ||
+																			ctpagos.label == cuentas + 'C' ||
+																			ctpagos.label == cuentas + 'D' ||
+																			ctpagos.label == cuentas + 'E' ||
+																			ctpagos.label == cuentas + 'F' ||
+																			ctpagos.label == cuentas + 'G'
+																		"
+																	>
+																		<th>
+																			<a class="btn btn-outline-primary"
+																			type="button"
+																			data-toggle="collapse"
+																			[attr.data-target]="'#collapseExample-' + ctpagos.label"
+																			aria-expanded="false"
+																			aria-controls="collapseExample"
+																			>{{ ctpagos.label }}</a>
+																			
+																		</th>
+
+																		<td>
+																			{{ ctpagos.num }}
+																		</td>
+
+																		<td>
+																			{{ ctpagos.data[0] | number: '1.2'  }}
+																		</td>
+																		<td>
+																			{{ ctpagos.data[1] | number: '1.2'  }}
+																		</td>
+																		
+																		<td>
+																			{{getCount(ctpagos.label)}}
+																		</td>
+																		
+																		<td>
+																			{{getCountno(ctpagos.label)}}
+																		</td>
+																		
+																	
+																	</tr>
+																	<ng-container *ngIf="mostar==1" >
+																		<tr id="{{ ctpagos.label }}"
+																		*ngIf="
+																			ctpagos.label == cuentas + 'A' ||
+																			ctpagos.label == cuentas + 'B' ||
+																			ctpagos.label == cuentas + 'C' ||
+																			ctpagos.label == cuentas + 'D' ||
+																			ctpagos.label == cuentas + 'E' ||
+																			ctpagos.label == cuentas + 'F' ||
+																			ctpagos.label == cuentas + 'G'
+																		"
+																		class="collapse"
+																		id="collapseExample-{{ ctpagos.label }}"
+																	>
+																		<td colspan="14"  >
+																			<div class="collapse" id="collapseExample-{{ ctpagos.label }}">
+																				<div class="card card-body">
+																					<div class="table-responsive">
+																						<table
+																							id="{{ ctpagos.label }}"
+																							class="table table-sm table-nowrap card-table"
+																						>
+																							<thead>
+																								<th> N°</th>
+																								<th>
+																									  Nombres
+																									  <button id="btncursos{{ ctpagos.label }}" type="button" class="btn btn-outline-primary" (click)="exportTable(ctpagos.label,ctpagos.genero)"><i class="fe fe-printer"> Impr.</i></button>
+																									 
+																								</th>
+																								<th>Rubros</th>
+																								<th>Matricula</th>
+																								<th>Mes 1</th>
+																								<th>Mes 2</th>
+																								<th>Mes 3</th>
+																								<th>Mes 4</th>
+																								<th>Mes 5</th>
+																								<th>Mes 6</th>
+																								<th>Mes 7</th>
+																								<th>Mes 8</th>
+																								<th>Mes 9</th>
+																								<th>Mes 10</th>
+																								<th>Total</th>
+																							</thead>
+																							<tbody *ngIf="pagos_estudiante">
+																								<ng-container
+																									*ngFor="let item of pagos_estudiante; let idenx = index"
+																								>
+																									<tr *ngIf="ctpagos.label == item.curso + item.paralelo">
+																										<td> {{ item.indice }}</td>
+																										<td style="text-align: left;">{{ item.nombres }}</td>
+																										<td><ng-container *ngIf="isNumber(item.detalle[11].valor) && item.detalle[11].valor>0">
+																											{{item.detalle[11].valor| number: '1.2'}}
+																										</ng-container>
+																										<ng-container *ngIf="!isNumber(item.detalle[11].valor)||item.detalle[11].valor<=0">
+																											-
+																										</ng-container>
+																											</td>
+																										<ng-container *ngFor="let detalle of item.detalle; let idetalle = index">
+																											<td *ngIf="isNumber(detalle.valor)&& idetalle!=11">
+																												<!--
+																													<p style="background-color: brown;" *ngIf="detalle.porpagar>0">
+																													{{ detalle.porpagar | number: '1.2'  }}
+																												</p>
+																												 -->
+
+																												<p *ngIf="detalle.valor > 0">
+																													{{ detalle.valor | number: '1.2'  }}
+																												</p>
+
+																												<p *ngIf="detalle.valor <= 0">-</p>
+																											</td>
+																										</ng-container>
+																										<td>{{sumarvalores(item.detalle)| number: '1.2' }}</td>
+																									</tr>
+																								</ng-container>
+																							</tbody>
+																							
+																							<tfoot>
+																								<tr>
+																									<td colspan="2"> Total</td>
+																									<td> {{sumarrecuadado(11,ctpagos.label)| number: '1.2' }} </td>
+																									<td> {{sumarrecuadado(0,ctpagos.label)| number: '1.2' }} </td>
+																									<td> {{sumarrecuadado(1,ctpagos.label)| number: '1.2' }} </td>
+																									<td> {{sumarrecuadado(2,ctpagos.label)| number: '1.2' }} </td>
+																									<td> {{sumarrecuadado(3,ctpagos.label)| number: '1.2' }} </td>
+																									<td> {{sumarrecuadado(4,ctpagos.label)| number: '1.2' }} </td>
+																									<td> {{sumarrecuadado(5,ctpagos.label)| number: '1.2' }} </td>
+																									<td> {{sumarrecuadado(6,ctpagos.label)| number: '1.2' }} </td>
+																									<td> {{sumarrecuadado(7,ctpagos.label)| number: '1.2' }} </td>
+																									<td> {{sumarrecuadado(8,ctpagos.label)| number: '1.2' }} </td>
+																									<td> {{sumarrecuadado(9,ctpagos.label)| number: '1.2' }} </td>
+																									<td> {{sumarrecuadado(10,ctpagos.label)| number: '1.2' }} </td>
+																									<td><b>{{sumarrecuadado(12,ctpagos.label)| number: '1.2' }}</b>
+																										  </td>
+																								</tr>
+																								<!--
+																									<ng-container
+																								*ngFor="let item of pagos_estudiante; let idenx = index"
+																							>
+																								<tr >
+																									<td> </td>
+																									<td style="text-align: left;"></td>
+																									<td></td>
+																									<ng-container *ngFor="let detalle of item.detalle">
+																										<td>
+																										</td>
+																									</ng-container>
+																									<td>{{sumarvalores(item.detalle)}}</td>
+																								</tr>
+																							</ng-container>
+																								-->
+																								
+																							</tfoot>
+																						</table>
+																					</div>
+																				</div>
+																			</div>
+																		</td>
+																	</tr>
+																	</ng-container>
+																	
+																</ng-container>
+															</tbody>
+															<tfoot>
+																<tr>
+																	<td colspan="1"><b>Total</b></td>
+																	<ng-container *ngFor="let cuentas of deteconomico; let idxe = index">
+																		<td>
+																			<span *ngIf="idxe == 0">{{ cuentas.data[idx] }}</span>
+																			<span *ngIf="idxe != 0">{{
+																				cuentas.data[idx] | number: '1.2' 
+																			}}</span>
+																		</td>
+																		
+																	</ng-container>
+																	<td>
+																		{{getCountTotal(cuentas)}}
+																	</td>
+																	<td>
+																		{{getCountnoTotal(cuentas)}}
+																	</td>
+																</tr>
+															</tfoot>
+														</table>
+													</div>
+												</div>
+											</ng-container>
+										</ng-container>
+									</div>
+
+									<div class="card" *ngIf="penest != undefined">
+										<div class="card-header">
+											<!-- Title -->
+											<h4 class="card-header-title">
+												Becas
+												<button
+													id="btnbecados"
+													mat-raised-button
+													class="btn btn-primary text-white mr-3"
+													(click)="exportTable('becados',[])"
+												>
+													<i class="fe fe-printer"> Impr.</i>
+												</button>
+											</h4>
+										</div>
+										<div class="table-responsive">
+											<table id="becados" class="table table-sm table-nowrap card-table">
+												<thead>
+													<tr>
+														<th>Estudainte</th>
+														<th>Curso</th>
+														<th>Beca</th>
+														<th>Matricula</th>
+														<th>Meses con Beca</th>
+														<th>Usado</th>
+													</tr>
+												</thead>
+												<tbody class="font-size-base" *ngIf="penest != undefined">
+													<ng-container *ngFor="let pensiones of penest">
+														<ng-container
+															*ngIf="
+																(pensiones.anio_lectivo | date : 'dd/MM/yyyy') ==
+																(fbeca | date : 'dd/MM/yyyy')  &&
+																pensiones.condicion_beca == 'Si' &&
+																pensiones.idestudiante.estado == 'Activo'
+															"
+														>
+															<tr>
+																<th>
+																	{{ pensiones.idestudiante.nombres }}
+																	{{ pensiones.idestudiante.apellidos }}
+																	<span
+																		class="alert alert-danger"
+																		*ngIf="pensiones.idestudiante.estado == 'Desactivado'"
+																	>
+																		<i class="fe fe-info mr-1"></i> Eliminado
+																	</span>
+																</th>
+																<th>{{ pensiones.curso }}{{ pensiones.paralelo }}</th>
+																<th>
+																	{{ pensiones.val_beca | number: '1.2'  }} 
+																</th>
+																<th>
+																	<span *ngIf="pensiones.matricula == 1"
+																		><i class="fe fe-check">Pagado</i>
+																	</span>
+
+																	<span *ngIf="pensiones.matricula == 0"
+																		><i class="fe fe-x">No Pagado</i></span
+																	>
+																</th>
+																<th>
+																	{{ pensiones.num_mes_beca }}
+																</th>
+																<th>
+																	{{ pensiones.num_mes_beca - pensiones.num_mes_res }}
+																</th>
+															</tr>
+														</ng-container>
+													</ng-container>
+												</tbody>
+											</table>
+										</div>
+										<div class="card-header">
+											<!-- Title -->
+											<h4 class="card-header-title">
+												Retirados
+												<button
+													id="btneliminados"
+													mat-raised-button
+													class="btn btn-primary text-white mr-3"
+													(click)="exportTable('eliminados',[])"
+												>
+													<i class="fe fe-printer"> Impr.</i>
+												</button>
+											</h4>
+										</div>
+										<div class="table-responsive">
+											<table id="eliminados" class="table table-sm table-nowrap card-table">
+												<thead>
+													<tr>
+														<th>Estudiante</th>
+														<th>Fecha</th>
+														<th>Curso</th>
+														<th>Beca</th>
+														<th>Matricula</th>
+														<th>Meses con Beca</th>
+														<th>Usado</th>
+														<th>Detalles de Pago</th>
+													</tr>
+												</thead>
+												<tbody class="font-size-base" *ngIf="penest != undefined">
+													<ng-container *ngFor="let pensiones of penest">
+														<ng-container
+															*ngIf="
+																(pensiones.anio_lectivo | date : 'dd/MM/yyyy') ==
+																	(fbeca | date : 'dd/MM/yyyy') &&
+																pensiones.idestudiante.estado == 'Desactivado' &&
+																(pensiones.anio_lectivo | date : 'dd/MM/yyyy') ==
+																	(pensiones.idestudiante.anio_desac | date : 'dd/MM/yyyy')
+															"
+														>
+															<tr>
+																<th>
+																	{{ pensiones.idestudiante.nombres }}
+																	{{ pensiones.idestudiante.apellidos }}
+																	<!--<span class="alert alert-danger" *ngIf="pensiones.idestudiante.estado=='Desactivado'">
+																	<i class="fe fe-info mr-1"></i>Eliminado
+																</span>-->
+																</th>
+																<th>
+																	{{ pensiones.idestudiante.f_desac | date : 'short' }}
+																</th>
+																<th>{{ pensiones.curso }}{{ pensiones.paralelo }}</th>
+																<th>
+																	<ng-container *ngIf="pensiones.val_beca != undefined">
+																		{{ pensiones.val_beca | number: '1.2'  }} (-{{ pensiones.desc_beca }}%)
+																	</ng-container>
+																	<ng-container *ngIf="pensiones.val_beca == undefined">
+																		No tiene Beca
+																	</ng-container>
+																</th>
+																<th>
+																	<span *ngIf="pensiones.matricula == 1"
+																		><i class="fe fe-check">Pagado</i>
+																	</span>
+
+																	<span *ngIf="pensiones.matricula == 0"
+																		><i class="fe fe-x">No Pagado</i></span
+																	>
+																</th>
+																<th>
+																	{{ pensiones.num_mes_beca }}
+																</th>
+																<th>
+																	<ng-container *ngIf="pensiones.val_beca != undefined">
+																		{{ pensiones.num_mes_beca - pensiones.num_mes_res }}
+																	</ng-container>
+																</th>
+																<div class="table-responsive">
+																	<th>
+																		<table class="table table-sm table-nowrap card-table">
+																			<thead>
+																				<tr>
+																					<th>Pension</th>
+																					<th>Factura</th>
+																				</tr>
+																			</thead>
+																			<tbody>
+																				<ng-container *ngFor="let pagos of estudiantes">
+																					<tr *ngIf="pagos.idpension._id == pensiones._id">
+																						<th *ngIf="pagos.idpension._id == pensiones._id">
+																							<span *ngIf="pagos.tipo == 0">
+																								Matricula: {{ pagos.valor | number: '1.2'  }}
+																							</span>
+																							<span *ngIf="pagos.tipo != 0">
+																								Mes {{ pagos.tipo }}:
+																								{{ pagos.valor | number: '1.2'  }}
+																							</span>
+																						</th>
+																						<th *ngIf="pagos.idpension._id == pensiones._id">
+																							<a
+																								style="cursor: pointer"
+																								[routerLink]="['/pagos/', pagos.pago._id]"
+																							>
+																								{{ pagos.pago._id }}</a
+																							>
+																						</th>
+																					</tr>
+																				</ng-container>
+																			</tbody>
+																		</table>
+																	</th>
+																</div>
+															</tr>
+														</ng-container>
+													</ng-container>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</ng-container>
+							</ng-container>
+						</ng-container>
+					</div>
+					<!-- Administrativo-->
+					<div *ngIf="load_administrativo == true">
+						<!-- Alert -->
+
+						<ng-container *ngIf="!load_data_est">
+							<div class="card">
+								<div class="card-header">
+									<!-- Title -->
+									<h4 class="card-header-title">Registro</h4>
+								</div>
+								<div class="card-body">
+									<div class="row">
+										<div class="col">
+											<div class="input-group input-group-merge">
+												<input
+													type="text"
+													class="form-control form-control-appended"
+													placeholder="Buscar correo, Fecha, proceso"
+													name="filtro"
+													[(ngModel)]="filtro"
+												/>
+												<div class="input-group-append">
+													<button class="btn btn-primary" (click)="filtrar_documento()">Buscar</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<ng-container *ngIf="resgistro_arr.length != 0">
+									<div class="table-responsive">
+										<table class="table table-sm table-nowrap card-table">
+											<thead>
+												<tr>
+													<th>Admin</th>
+													<th>Fecha</th>
+													<th>Proceso</th>
+													<th>Accción</th>
+												</tr>
+											</thead>
+											<tbody class="font-size-base">
+												<ng-container
+													*ngFor="
+														let item of resgistro_arr
+															| slice : (page - 1) * pageSize : (page - 1) * pageSize + pageSize
+													"
+												>
+													<tr *ngIf="resgistro_arr != undefined">
+														<td>
+															<div class="d-flex align-items-center">
+																<div class="ms-3">
+																	<ng-container *ngIf="item.admin!=null">
+																		<h4 class="fw-normal mb-1">
+																			{{ item.admin.nombres }} {{ item.admin.apellidos }}
+																		</h4>
+																		<!-- Text -->
+																		<span>{{ item.admin.email }} </span>
+																	</ng-container>
+																	<!-- Heading -->
+																	<ng-container *ngIf="item.admin==null">
+																			ADMIN INCORP
+																	</ng-container>
+																</div>
+															</div>
+														</td>
+														<td>
+															{{ item.createdAt | date : 'short' }}
+														</td>
+														<td>
+															{{ item.tipo }}
+														</td>
+														<td>
+															{{ item.descripcion }}
+														</td>
+													</tr>
+												</ng-container>
+											</tbody>
+										</table>
+									</div>
+
+									<ngb-pagination
+										*ngIf="resgistro_arr.length >= 1"
+										[(page)]="page"
+										[pageSize]="pageSize"
+										[maxSize]="10"
+										[rotate]="true"
+										[boundaryLinks]="true"
+										[collectionSize]="resgistro_arr.length"
+									></ngb-pagination>
+								</ng-container>
+
+								<ng-container *ngIf="resgistro_arr.length == 0">
+									<div class="alert alert-danger" *ngIf="resgistro_arr.length == 0">
+										<i class="fe fe-info mr-1"></i> No tienes Registro
+									</div>
+								</ng-container>
+							</div>
+						</ng-container>
+					</div>
+
+					<ng-container *ngIf="load_data_est == true && estudiantes.length != 0 && estudiantes.length > 0">
+						<div class="card-body" style="cursor: progress">
+							<div class="row">
+								<div class="col-12 text-center">
+									<div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+										<span class="visually-hidden"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</ng-container>
+
+					<!-- <d0iv class="card">
+              <div class="card-header">
+
+                 Title 
+                <h4 class="card-header-title">
+                  Invoices
+                </h4>
+
+              </div>
+              <div class="table-responsive">
+                <table class="table table-sm table-nowrap card-table">
+                  <thead>
+                    <tr>
+                      <th>Invoice ID</th>
+                      <th>Date</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="font-size-base">
+                    <tr>
+                      <td>
+                        <a href="invoice.html">Invoice #10395</a>
+                      </td>
+                      <td>
+                        <time datetime="2020-04-24">Apr. 24, 2020</time>
+                      </td>
+                      <td>
+                        $29.00
+                      </td>
+                      <td>
+                        <span class="badge badge-secondary">Outstanding</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="invoice.html">Invoice #10244</a>
+                      </td>
+                      <td>
+                        <time datetime="2020-03-24">Mar. 24, 2020</time>
+                      </td>
+                      <td>
+                        $29.00
+                      </td>
+                      <td>
+                        <span class="badge badge-success">Paid</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="invoice.html">Invoice #10119</a>
+                      </td>
+                      <td>
+                        <time datetime="2020-02-24">Feb. 24, 2020</time>
+                      </td>
+                      <td>
+                        $29.00
+                      </td>
+                      <td>
+                        <span class="badge badge-success">Paid</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="invoice.html">Invoice #10062</a>
+                      </td>
+                      <td>
+                        <time datetime="2020-01-24">Jan. 24, 2020</time>
+                      </td>
+                      <td>
+                        $29.00
+                      </td>
+                      <td>
+                        <span class="badge badge-success">Paid</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>-->
+
+					<!-- Text -->
+					<p class="text-center">
+						<small class="text-muted"
+							>Tienes alguna duda? <a href="mailto:info@golden-incorp.com">CONTACTANOS</a></small
+						>
+					</p>
+
+					<br />
+				</div>
+			</div>
+			<!-- / .row -->
+		</div>
+	</div>
+</ng-container>
+<ng-container *ngIf="rol == undefined">
+	<div class="card-body" style="cursor: progress">
+		<div class="main-content">
+			<div class="row">
+				<div class="col-12 text-center">
+					<div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+						<span class="visually-hidden"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</ng-container>

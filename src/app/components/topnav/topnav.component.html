@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand-md navbar-light fixed-top d-none d-md-flex" id="topbar">
+
+	<div class="container-fluid">
+		<button
+			class="navbar-expand-md"
+			type="button"
+			data-toggle="collapse"
+			data-target="#sidebarCollapse"
+			aria-controls="sidebarCollapse"
+			aria-expanded="false"
+			aria-label="Toggle navigation"
+		>
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+
+		<!-- User -->
+		<div class="navbar-user" style="margin-right: 17px">
+			<!-- Dropdown -->
+
+			<!-- Dropdown -->
+			<div class="dropdown">
+				<!-- Toggle -->
+				<a
+					class="avatar avatar-sm avatar-online dropdown-toggle"
+					role="button"
+					data-toggle="dropdown"
+					aria-haspopup="true"
+					aria-expanded="false"
+				>
+					<img src="https://i.postimg.cc/WbBBTwQk/usuario.png" alt="..." class="avatar-img rounded-circle" />
+				</a>
+
+				<!-- Menu -->
+				<div class="dropdown-menu dropdown-menu-right">
+					<a
+						class="dropdown-item"
+						style="cursor: pointer"
+						aria-labelledby="sidebarIcon"
+						[routerLink]="['/administrativo/edit', id]"
+					>
+						<span class=""></span> {{ nombres }}
+					</a>
+
+					<a class="dropdown-item" style="cursor: pointer; text-align: right" (click)="logout()">
+						<span class="fe fe-log-out me-4"></span> Cerrar sesión
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>

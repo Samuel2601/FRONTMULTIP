@@ -1,0 +1,10 @@
+button.btn.btn-primary {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}input:invalid {
+    border: 2px solid red;
+  }
+  
+  input:valid {
+    border: 2px solid black;
+  }
