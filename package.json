@@ -26,7 +26,7 @@
     "@flatfile/sdk": "^2.3.4",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "@ngtools/webpack": "^13.3.7",
-    "chart.js": "^3.7.1",
+    "chart.js": "^3.9.1",
     "core-js": "^3.22.8",
     "datatables.net-bs5": "^1.12.1",
     "datatables.net-buttons-bs5": "^2.2.3",
