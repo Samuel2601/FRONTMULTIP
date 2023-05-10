@@ -17,7 +17,7 @@ export class IndexPagosComponent implements OnInit {
 	public const_pagos: Array<any> = [];
 	public token = localStorage.getItem('token');
 	public page = 1;
-	public pageSize = 24;
+	public pageSize = 10;
 	public filtro = '';
 	public desde: any = undefined;
 	public hasta: any = undefined;

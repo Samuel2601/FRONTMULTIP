@@ -1,0 +1,141 @@
+<app-sidebar></app-sidebar>
+<br>
+<br><br>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-8 col-lg-8 col-xl-8">
+        <!-- Header -->
+        <div class="header mt-md-5">
+          <div class="header-body">
+            <div class="row align-items-center">
+              <div class="col">
+                <!-- Pretitle -->
+                <h6 class="header-pretitle">Módulo</h6>
+
+                <!-- Title -->
+                <h1 class="header-title">Proveedores</h1>
+              </div>
+            </div>
+            <!-- / .row -->
+          </div>
+        </div>
+
+        <!-- Alert -->
+        <div class="card">
+          <div class="card-body">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              
+            
+
+              <button class="btn btn-primary" type="button"
+              data-toggle="modal"
+              [attr.data-target]="'#modalAddProv'">Añadir</button>
+
+              <button class="btn btn-primary" type="button"
+              data-toggle="modal"
+              [attr.data-target]="'#modalAddProvMasivo'">Añadir Masivo</button>
+              </div>
+            <div class="table">
+              <div class="table-responsive">
+                <table class="table table-sm table-nowrap card-table">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>RUC</th>
+                      <th>Dirección</th>
+                      <th>Teléfono</th>
+                      <th>Email</th>
+                    </tr>
+                  </thead>
+                  <tbody class="font-size-base">
+                    <tr *ngFor="let proveedor of proveedores">
+                      <td>{{proveedor.nombre}}</td>
+                      <td>{{proveedor.ruc}}</td>
+                      <td>{{proveedor.direccion}}</td>
+                      <td>{{proveedor.telefono}}</td>
+                      <td>{{proveedor.email}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>          
+          </div>
+        </div>
+        
+        <div class="modal fade" id="modalAddProvMasivo" style="display: none" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="documentrubro">
+            <div class="modal-content">
+              <div class="modal-header">
+               
+                  <!-- Title -->
+                  <h4 class="card-header-title">Adjunto tu archivo CSV</h4>
+               
+              </div>
+              <div class="modal-content">
+                <ngx-file-drop (onFileDrop)="onFileChange($event)">
+                  Arrastra y suelta un archivo aquí o haz clic para seleccionar un archivo.
+                </ngx-file-drop>
+
+                <input type="file" class="btn btn-primary" (change)="onFileChange($event)">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card -->
+        <div class="modal fade" id="modalAddProv" style="display: none" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="documentrubro">
+            <div class="modal-content">
+              <div class="modal-header">
+               
+                  <!-- Title -->
+                  <h4 class="card-header-title">Agregar nuevo Proveedor</h4>
+               
+              </div>
+              <div class="modal-content">
+                <form (ngSubmit)="guardarProveedor()" #proveedorForm="ngForm">
+                  <div class="card">
+                    
+                    <div class="card-body">
+                      <div>
+                         <label class="form-label" for="nombre">Nombre:</label>
+                         
+                        <input  class="form-control" type="text" id="nombre" name="nombre" [(ngModel)]="proveedor.nombre" required>
+                      </div>
+                      <div>
+                         <label class="form-label" for="ruc">RUC:</label>
+                        <input class="form-control" type="text" id="ruc" name="ruc" [(ngModel)]="proveedor.ruc" required>
+                      </div>
+                      <div>
+                         <label class="form-label" for="direccion">Dirección:</label>
+                        <input class="form-control" type="text" id="direccion" name="direccion" [(ngModel)]="proveedor.direccion" required>
+                      </div>
+                      <div>
+                         <label class="form-label" for="telefono">Teléfono:</label>
+                        <input class="form-control" type="text" id="telefono" name="telefono" [(ngModel)]="proveedor.telefono" required>
+                      </div>
+                      <div>
+                         <label class="form-label" for="email">Email:</label>
+                        <input class="form-control" type="email" id="email" name="email" [(ngModel)]="proveedor.email" required>
+                      </div>
+                      
+                    </div>
+                    <div class="card-footer">
+        
+                      <button class="btn btn-primary btn-shadow" type="submit" [disabled]="!proveedorForm.valid">Guardar</button>
+                    </div>
+                    </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  

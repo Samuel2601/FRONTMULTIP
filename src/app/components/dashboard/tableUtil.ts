@@ -139,7 +139,8 @@ export class TableUtil {
 		del: string,
 		admin: string,
 		fecha: string,
-		imagen: string
+		imagen: string,
+    admtitulo:string,
 	) {
 		let printContents, popupWin;
 		printContents = document.getElementById(tableId).innerHTML;
@@ -241,11 +242,11 @@ export class TableUtil {
 				`</p><p>Delegado del Obispo</p></th>
                                   <th style="border:0"></th>
                                   <th style="border:0"><p> ` +
-				admin +
-				`</p><p>Administador(a)</p></th>
-                                </tr>
-                              
-                              </tbody>
+                                  admin +
+                                  `</p><p>  ` +admtitulo +`</p></th>
+                                                           </tr>
+                                                         
+                                                         </tbody>
                            
                           </table>                          
       </div>

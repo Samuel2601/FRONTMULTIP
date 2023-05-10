@@ -34,12 +34,12 @@ export class CreatePagosComponent implements OnInit {
 	public filtro_estudiante = '';
 	public estudiantes: Array<any> = [];
 	public pageEstudiante = 1;
-	public pageSizeEstudiante = 20;
+	public pageSizeEstudiante = 10;
 	public load_estudiantes = false;
 
 	public direcciones: Array<any> = [];
 	public pageDireccion = 1;
-	public pageSizeDireccion = 20;
+	public pageSizeDireccion = 10;
 	public load_direcciones = false;
 	public direccion_select: any = {};
 
@@ -47,7 +47,7 @@ export class CreatePagosComponent implements OnInit {
 	public auxabono: Array<any> = [];
 	public documento_const: Array<any> = [];
 	public pageVariedad = 1;
-	public pageSizeVariedad = 20;
+	public pageSizeVariedad = 10;
 	public load_documento = false;
 	public documento_select: any = undefined;
 	public mes: any;
@@ -190,7 +190,9 @@ public arr_rubro_const=[];
 	selecct_pension(){
 		this.arr_rubro=[];
 		var i=this.idp;
-		if (this.pension[i].meses < 9 || (this.pension[i].matricula != 1 && this.pension[i].paga_mat == 0)||(JSON.parse(this.pension[i].idanio_lectivo.extrapagos).length!=JSON.parse(this.pension[i].extrapagos).length)) {
+		//console.log("I",i);
+		//console.log(this.pension[i]);
+		if (this.pension[i].meses < 9 || (this.pension[i].matricula != 1 && this.pension[i].paga_mat == 0)||((this.pension[i].extrapagos==undefined&&this.pension[i].idanio_lectivo.extrapagos!=undefined)||(JSON.parse(this.pension[i].idanio_lectivo.extrapagos).length!=JSON.parse(this.pension[i].extrapagos).length))) {
 			if(this.pension[i].idanio_lectivo.extrapagos){
 
 				//console.log(this.pension[i].idanio_lectivo.extrapagos)

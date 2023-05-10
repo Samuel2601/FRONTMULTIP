@@ -25,7 +25,7 @@ export class IndexAdminComponent implements OnInit {
 	public rol: any;
 	public yo = 0;
 	public page = 1;
-	public pageSize = 24;
+	public pageSize = 10;
 	public filtro = '';
 	public idadmin = '';
 	public config = {

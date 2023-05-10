@@ -3,15 +3,54 @@ import { Observable } from 'rxjs';
 import { GLOBAL } from './GLOBAL';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
-
 @Injectable({
 	providedIn: 'root',
 })
 export class AdminService {
 	public url;
-
+	
 	constructor(private _http: HttpClient) {
 		this.url = GLOBAL.url;
+	}
+
+	getapitoken():Observable<any>{
+		return this._http.get('./assets/tokendigitalocean.json')
+	}
+	actualizzas_dash( token: any,data: any):Observable<any>{
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			Authorization: token,
+		});
+		return this._http.put(this.url + 'actualizzas_dash', data, { headers: headers });
+	}
+
+	getDashboar_estudiante(token:any):Observable<any>{
+		let headers = new HttpHeaders({
+			'Content-Type': 'application/json',
+			Authorization: token,
+		});
+		return this._http.get(this.url + 'getDashboar_estudiante', {
+			headers: headers,
+		});
+	}
+
+	conec_api(token:any):Observable<any>{
+		const apiKey= 'DO002CF4YQ6CAA3PMRBF'
+		const httpOptions = {
+			headers: new HttpHeaders({
+			  'Content-Type': 'application/json',
+			  'Authorization': 'Bearer ' + apiKey
+			})
+		  };
+
+		//const token = 'dop_v1_bdb76a778174aeda31018939d47d5c2be8763f6c8ba98d67c740b7a0a6b83655';
+		const headers = { 'Authorization': `Bearer ${token}` };
+		
+		
+		const url = 'https://api.digitalocean.com/v2/customers/my/balance';
+	  
+		return this._http.get(url, { headers });
+		//return this._http.get(url, httpOptions);
 	}
 
 	obtener_ip_admin(): Observable<any> {

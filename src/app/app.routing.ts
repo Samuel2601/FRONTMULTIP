@@ -27,8 +27,14 @@ import { ForgotPasswordComponent } from './components/cuenta/forgot-password/for
 import { NewPasswordComponent } from './components/cuenta/new-password/new-password.component';
 import { ControlComponent } from './components/cuenta/control/control.component';
 
+import { EgresosComponent } from './components/egresos/egresos.component';
+import { ProveedoresComponent } from './components/proveedores/proveedores.component';
 const appRoute: Routes = [
 	{ path: '', redirectTo: 'login', pathMatch: 'full' },
+
+	{ path: 'egresos', component: EgresosComponent, canActivate: [AuthGuard] },
+	{ path: 'proveedores', component: ProveedoresComponent, canActivate: [AuthGuard] },
+
 	{ path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
 	{ path: 'control', component: ControlComponent, canActivate: [AuthGuard] },
 	{ path: 'login', component: LoginComponent },

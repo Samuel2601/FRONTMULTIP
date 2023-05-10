@@ -17,7 +17,7 @@ export class ControlComponent implements OnInit {
 	public admin: Array<any> = [];
 	public admin_const: Array<any> = [];
 	public page = 1;
-	public pageSize = 24;
+	public pageSize = 10;
 	public url = GLOBAL.url;
 
 	constructor(private _adminService: AdminService, private _router: Router) {}

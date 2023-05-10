@@ -14,7 +14,7 @@ export class IndexDocumentoComponent implements OnInit {
 	public documentos_const: Array<any> = [];
 	public token = localStorage.getItem('token');
 	public page = 1;
-	public pageSize = 24;
+	public pageSize = 10;
 	public filtro = '';
 	public rol: any;
 	public load_btn_etiqueta = false;

@@ -1,0 +1,190 @@
+<app-sidebar></app-sidebar>
+<br>
+<br><br>
+<div class="main-content">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-8 col-lg-8 col-xl-8">
+          <!-- Header -->
+          <div class="header mt-md-5">
+            <div class="header-body">
+              <div class="row align-items-center">
+                <div class="col">
+                  <!-- Pretitle -->
+                  <h6 class="header-pretitle">Módulo</h6>
+  
+                  <!-- Title -->
+                  <h1 class="header-title">Egresos</h1>
+                </div>
+              </div>
+              <!-- / .row -->
+            </div>
+          </div>
+  
+          <!-- Alert -->
+          <div class="card">
+            <div class="card-body">
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-primary" type="button"
+                data-toggle="modal"
+                [attr.data-target]="'#modalAddProv'">Añadir</button>
+                </div>
+              <div class="table">
+                <div class="table-responsive">
+                  <table class="table table-sm table-nowrap card-table">
+                    <thead>
+                      <tr>
+                        <th>Encargado</th>
+                        <th>Proveedor</th>
+                        <th>Cuenta</th>
+                        <th>Forma de Pago</th>
+                        <th>Monto</th>
+                        <th>Fecha</th>
+                      </tr>
+                    </thead>
+                    <tbody class="font-size-base">
+                      <tr *ngFor="let iten_egreso of egresos">
+                        <td>{{iten_egreso.admin}}</td>
+                        <td>{{iten_egreso.proveedor}}</td>
+                        <td>{{iten_egreso.cuentaContable}}</td>
+                        <td>{{iten_egreso.formaPago}}</td>
+                        <td>{{iten_egreso.monto}}</td>
+                        <td>{{iten_egreso.fecha}}</td>                        
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>          
+            </div>
+          </div>
+          <!-- Card -->
+          <div class="modal fade" id="modalAddProv" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="egreso">
+              <div class="modal-content">
+                <div class="modal-header">
+                 
+                    <!-- Title -->
+                    <h4 class="card-header-title">Agregar nuevo Egreso</h4>
+                    
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+    
+                 
+                </div>
+                <div class="modal-content">
+                  <form (ngSubmit)="guardarEgreso()" #proveedorForm="ngForm">
+                    <div class="card">
+                      
+                      <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-8">                                
+                                <div class="form-group">
+                                    <label for="proveedor">Proveedor o destinatario:</label>
+                                    <select class="form-control" id="proveedor" [(ngModel)]="egreso.proveedor" name="proveedor" required>
+                                        <option value="">Seleccione una opción</option>
+                                        <ng-container *ngIf="proveedores">
+                                            <ng-container *ngFor="let prov of proveedores">
+                                                <option value="prov._id">{{prov.ruc}}</option>
+                                            </ng-container>
+                                        </ng-container>                                   
+                                        </select>
+                                    </div>
+                                
+                             
+                            </div>
+
+
+                            <div class="col-md-4">
+                             
+                                <div class="form-group">
+                                    <label for="cuentaContable">Cuenta contable:</label>
+                                    <input type="text" class="form-control" id="cuentaContable" [(ngModel)]="egreso.cuentaContable" name="cuentaContable" required>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="categoria">Categoría:</label>
+                                    <select class="form-control" id="categoria" [(ngModel)]="egreso.categoria" name="categoria" required>
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="Alquileres">Alquileres</option>
+                                    <option value="Servicios">Servicios</option>
+                                    <option value="Impuestos">Impuestos</option>
+                                    <option value="Materiales y suministros">Materiales y suministros</option>
+                                    <option value="Honorarios">Honorarios</option>
+                                    <option value="Otros">Otros</option>
+                                    </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="monto">Monto:</label>
+                                        <input type="number" class="form-control" id="monto" [(ngModel)]="egreso.monto" name="monto" required>
+                                      </div>
+                                <div class="form-group">
+                                    <label for="observaciones">Observaciones:</label>
+                                    <textarea class="form-control" id="observaciones" [(ngModel)]="egreso.observaciones" name="observaciones"></textarea>
+                                </div>
+                                
+                                
+                                
+                                  
+                                  
+                                  
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="fecha">Fecha:</label>
+                                    <input type="date" class="form-control" id="fecha" [(ngModel)]="egreso.fecha" name="fecha" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="retencion" >Retención:</label>
+                                    
+                                      <input type="number" class="form-control" id="retencion" [(ngModel)]="egreso.retencion" name="retencion" required>
+                                    
+                                  </div>
+                                <div class="form-group">
+                                    <label for="concepto">Concepto:</label>
+                                    <textarea class="form-control" id="concepto" [(ngModel)]="egreso.concepto" name="concepto" required></textarea>
+                                  </div>
+                                  
+                                  
+                                 
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="cuenta">Cuenta bancaria o de caja:</label>
+                                    <input type="text" class="form-control" id="cuenta" [(ngModel)]="egreso.cuenta" name="cuenta" required>
+                                  </div>
+                                <div class="form-group">
+                                    <label for="comprobante">Número de comprobante:</label>
+                                    <input type="text" class="form-control" id="comprobante" [(ngModel)]="egreso.numeroComprobante" name="comprobante" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="formaPago">Forma de pago:</label>
+                                    <select class="form-control" id="formaPago" [(ngModel)]="egreso.formaPago" name="formaPago" required>
+                                        <option value="">Seleccione una opción</option>
+                                        <option value="Efectivo">Efectivo</option>
+                                        <option value="Cheque">Cheque</option>
+                                        <option value="Transferencia bancaria">Transferencia bancaria</option>
+                                        <option value="Tarjeta de crédito/débito">Tarjeta de crédito/débito</option>
+                                      </select>
+                                </div>
+                            </div>
+                        </div>
+                           
+                        
+                      </div>
+                      <div class="card-footer">
+          
+                        <button class="btn btn-primary btn-shadow" type="submit" [disabled]="!proveedorForm.valid">Guardar</button>
+                      </div>
+                      </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

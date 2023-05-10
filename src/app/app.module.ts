@@ -85,7 +85,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
-
+import { NgxFileDropModule } from 'ngx-file-drop';
 import './polyfills';
 
 //mport {HttpClientModule} from '@angular/common/http';
@@ -96,6 +96,8 @@ import './polyfills';
 //import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ControlComponent } from './components/cuenta/control/control.component';
+import { EgresosComponent } from './components/egresos/egresos.component';
+import { ProveedoresComponent } from './components/proveedores/proveedores.component';
 
 //import {TableBasicExample} from './app/components/dashboard/dashboard.component';
 
@@ -170,9 +172,12 @@ import { ControlComponent } from './components/cuenta/control/control.component'
 		ForgotPasswordComponent,
 		NewPasswordComponent,
 		ControlComponent,
+		EgresosComponent,
+		ProveedoresComponent,
 	],
 
 	imports: [
+		NgxFileDropModule,
 		FlatfileAdapterModule,
 		BrowserModule,
 		AppRoutingModule,

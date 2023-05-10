@@ -30,11 +30,8 @@ export class TopnavComponent implements OnInit {
 
 	logout() {
 		//window.location.reload();
-		localStorage.removeItem('token');
-		localStorage.removeItem('_id');
-		localStorage.removeItem('user_data');
-		localStorage.removeItem('identity');
-		localStorage.removeItem('geo');
+		localStorage.clear();
+
 		this._router.navigate(['/']).then(() => {
 			window.location.reload();
 		});

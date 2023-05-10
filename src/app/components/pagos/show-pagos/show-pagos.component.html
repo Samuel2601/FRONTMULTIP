@@ -1,5 +1,6 @@
 <app-sidebar></app-sidebar>
-
+<br>
+<br><br>
 <div class="main-content">
 	<div class="container-fluid">
 		<div class="row justify-content-center">
@@ -58,9 +59,28 @@
 									Emitir Factura Electrónica
 								</button>
 								
+									<button
+							id="tbnfacturar"
+							
+							mat-raised-button
+							class="btn btn-primary btn-sm"
+							(click)="factura_electronica_soap()"
+						>
+							Emitir Factura
+						</button>	
+
+						<button
+										id="btnimprimircompro"
+										mat-raised-button
+										class="btn btn-primary btn-sm"
+										(click)="armado()"
+									>
+										ARMADO
+									</button>
+							-->
+							
+
 								
-								-->
-								<button id="tbnfacturar" mat-raised-button  class="btn btn-primary btn-sm" (click)="eliminar_factura()">Eliminar Factura</button>
 								
 								
 
@@ -69,7 +89,32 @@
 									
 
 									
-									
+							<button id="tbnfacturar" mat-raised-button  data-toggle="modal"
+							[attr.data-target]="'#modalConfirmarD'" *ngIf="pago.estado == 'Emitido'" class="btn btn-primary btn-sm" >Devolución de Factura</button>
+							
+							<div class="modal fade" id="modalConfirmarD" style="display: none" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h4 class="modal-title">Devolución de Factura</h4>
+											<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<p>¿Desea realizar está devolución?</p>
+											
+										</div>
+										<div class="modal-footer">
+											<button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+												Cancelar
+											</button>
+											<button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="eliminar_factura()">Si</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
 									<button
 										id="btnimprimircompro"
 										mat-raised-button
@@ -78,6 +123,7 @@
 									>
 										Comprobante
 									</button>
+									
 									<button
 										id="btnimprimir"
 										mat-raised-button
@@ -167,7 +213,7 @@
 							</div>
 							<button
 									id="tbnfacturar"
-									*ngIf="pago.estado != 'Emitido' && linkfact!=''"
+									*ngIf="pago.estado != 'Emitido'"
 									mat-raised-button
 									class="btn btn-primary btn-sm"
 									(click)="factura_electronica_soap()"

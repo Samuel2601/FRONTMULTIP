@@ -1,4 +1,6 @@
 <app-sidebar></app-sidebar>
+<br>
+<br><br>
 <ng-container *ngIf="rol != undefined ">
 	<div class="main-content">
 		<div class="container-fluid">
@@ -21,6 +23,23 @@
 								<div class="col">
 									<!-- Nav -->
 									<ul class="nav nav-tabs nav-overflow header-tabs">
+										<li class="nav-item">
+											<a
+												*ngIf="!load_estudiantes"
+												class="nav-link"
+												style="cursor: pointer"
+												(click)="estadoestudiante()"
+											>
+												ESTUDIANTES
+											</a>
+											<a
+												*ngIf="load_estudiantes"
+												class="nav-link active"
+												style="cursor: no-drop; background: rgba(255, 255, 255, 0.365)"
+											>
+												ESTUDIANTES
+											</a>
+										</li>
 										<li class="nav-item" disabled>
 											<a
 												*ngIf="!load_ventas"
@@ -55,23 +74,7 @@
 												DOCUMENTOS
 											</a>
 										</li>
-										<li class="nav-item">
-											<a
-												*ngIf="!load_estudiantes"
-												class="nav-link"
-												style="cursor: pointer"
-												(click)="estadoestudiante()"
-											>
-												ESTUDIANTES
-											</a>
-											<a
-												*ngIf="load_estudiantes"
-												class="nav-link active"
-												style="cursor: no-drop; background: rgba(255, 255, 255, 0.365)"
-											>
-												ESTUDIANTES
-											</a>
-										</li>
+										
 										<li class="nav-item" *ngIf="rol == 'admin'">
 											<a
 												*ngIf="!load_administrativo"
@@ -100,17 +103,7 @@
 						<div class="alert alert-danger" *ngIf="ventas.length == 0 && load_data_est==false">
 							<i class="fe fe-info mr-1"></i> No tienes Pagos
 						</div>
-						<ng-container *ngIf="load_data_est == true ">
-							<div class="card-body" style="cursor: progress">
-								<div class="row">
-									<div class="col-12 text-center">
-										<div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
-											<span class="visually-hidden"></span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</ng-container>
+						
 
 						<div class="card-body">
 							<div class="row">
@@ -243,17 +236,7 @@
 						<div class="alert alert-danger" *ngIf="documentos.length == 0 && load_data_est==false">
 							<i class="fe fe-info mr-1"></i> No tienes Documentos
 						</div>
-						<ng-container *ngIf="load_data_est == true ">
-							<div class="card-body" style="cursor: progress">
-								<div class="row">
-									<div class="col-12 text-center">
-										<div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
-											<span class="visually-hidden"></span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</ng-container>
+						
 
 						<div class="card-body">
 							<div class="row">
@@ -335,11 +318,11 @@
 					<div class="card" *ngIf="load_estudiantes == true">
 						<ng-container>
 							<!-- Alert -->
-							<div class="alert alert-danger" *ngIf="estudiantes.length == 0">
+							<div class="alert alert-danger" *ngIf="estudiantes?.length == 0&&!load_data_est">
 								<i class="fe fe-info mr-1"></i> No tienes Pagos realizados
-							</div>
+							</div> 	
 
-							<div class="card">
+							<div class="card" *ngIf="!load_data_est">
 								<div class="card-body">
 									<ul class="nav nav-pills nav-overflow header-tabs">
 										<ng-container *ngFor="let pen1 of config; let val = index">
@@ -356,6 +339,11 @@
 											</li>
 										</ng-container>
 									</ul>
+									<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+										<p *ngIf="horaact"><i>{{horaact| date:'long'}}</i></p>
+										<button class="btn btn-primary" (click)="actualizar_estudiante()">Actualizar</button>
+									  </div>
+
 								</div>
 							</div>
 							<div class="card-body">
@@ -370,7 +358,7 @@
 									</div>
 								</div>
 							</div>
-							<ng-container *ngIf="estudiantes.length != 0">
+							<ng-container *ngIf="estudiantes&&estudiantes.length != 0">
 								<ng-container *ngIf="!load_data_est">
 									<div class="row">
 										<div class="col-12 col-md-12">
@@ -419,32 +407,43 @@
 											<div class="card">
 												<div class="card-header">
 													<h3 class="card-header-title">
-														DETALLE ECONOMICO DE PENSIONES
-														<button
-															id="btncvs"
-															mat-button
-															(click)="exporter.exportTable('csv')"
-															class="btn btn-primary text-white mr-3"
-														>
-															CSV
-														</button>
-														<button
-															id="btnxlsx"
-															mat-button
-															(click)="exporter.exportTable('xlsx')"
-															class="btn btn-primary text-white mr-3"
-														>
-															Excel
-														</button>
-														<button
-															id="btnpdf"
-															mat-raised-button
-															class="btn btn-primary text-white mr-3"
-															(click)="exportTable('detalleeconomico',[])"
-														>
-															PDF
-														</button>
+														DETALLE ECONOMICO DE PENSIONES	
 													</h3>
+													<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+														<button
+														id="btncvs"
+														mat-button
+														(click)="exporter.exportTable('csv')"
+														class="btn btn-primary text-white mr-3"
+													>
+														CSV
+													</button>
+													<button
+														id="btnxlsx"
+														mat-button
+														(click)="exporter.exportTable('xlsx')"
+														class="btn btn-primary text-white mr-3"
+													>
+														Excel
+													</button>
+													
+													<button
+														id="btnpdf"
+														mat-raised-button
+														class="btn btn-primary text-white mr-3"
+														(click)="exportTable('detalleeconomico',[])"
+													>
+														PDF
+													</button>
+													<button
+														id="btnxlsxcash"
+														mat-button
+														(click)="exportarcash()"
+														class="btn btn-primary text-white mr-3"
+													>
+														CASH
+													</button>
+												  </div>
 												</div>
 
 												<div class="table-responsive">
@@ -514,18 +513,31 @@
 														<tr mat-row *matRowDef="let row; columns: cursos2" style="width: 200px"></tr>
 													</mat-table>
 												</div>
+
+												
 											</div>
 										</ng-container>
 
 										<ng-container *ngIf="cursos != undefined">
 											<ng-container *ngFor="let cuentas of cursos; let idx = index">
-												<div class="card" *ngIf="constpagospension != undefined">
+												<div class="card" *ngIf="pagospension != undefined">
 													<div class="card-header">
 														<!-- Title -->
 														<h4 class="card-header-title">
-															Curso: {{ cuentas }}
+															<a class="btn btn-outline-primary"
+															type="button"
+															data-toggle="collapse"
+															[attr.data-target]="'#collapseExample-' + cuentas"
+															aria-expanded="false"
+															aria-controls="collapseExample">
+																Curso: {{ cuentas }}
+															</a>
 															
-															<button
+															
+															
+														</h4>
+															<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+																<button
 																id="btncursos{{ cuentas }}"
 																mat-raised-button
 																class="btn btn-primary text-white mr-3"
@@ -533,9 +545,9 @@
 															>
 																<i class="fe fe-printer"> Impr.</i>
 															</button>
-														</h4>
+														</div>
 													</div>
-													<div class="table">
+													<div class="table" class="collapse show" id="collapseExample-{{ cuentas }}">
 														<table id="{{ cuentas }}" class="table table-sm table-nowrap card-table">
 															<thead>
 																<tr>
@@ -547,8 +559,8 @@
 																	<th> Por cobrar Matricula </th>
 																</tr>
 															</thead>
-															<tbody class="font-size-base" *ngIf="constpagospension != undefined">
-																<ng-container *ngFor="let ctpagos of constpagospension">
+															<tbody class="font-size-base" *ngIf="pagospension != undefined">
+																<ng-container *ngFor="let ctpagos of pagospension">
 																	<tr
 																		*ngIf="
 																			ctpagos.label == cuentas + 'A' ||
@@ -641,7 +653,11 @@
 																								>
 																									<tr *ngIf="ctpagos.label == item.curso + item.paralelo">
 																										<td> {{ item.indice }}</td>
-																										<td style="text-align: left;">{{ item.nombres }}</td>
+																										<td style="text-align: left;">{{ item.nombres }} 
+																											<ng-container *ngIf="item.estado=='Desactivado'">
+																												<i>(Retirado)</i>
+																											</ng-container>
+																										</td>	
 																										<td><ng-container *ngIf="isNumber(item.detalle[11].valor) && item.detalle[11].valor>0">
 																											{{item.detalle[11].valor| number: '1.2'}}
 																										</ng-container>
@@ -658,7 +674,7 @@
 																												 -->
 
 																												<p *ngIf="detalle.valor > 0">
-																													{{ detalle.valor | number: '1.2'  }}
+																													{{ detalle.valor | number: '1.2'  }}				
 																												</p>
 
 																												<p *ngIf="detalle.valor <= 0">-</p>
@@ -746,18 +762,29 @@
 										<div class="card-header">
 											<!-- Title -->
 											<h4 class="card-header-title">
+												<a class="btn btn-outline-primary"
+												type="button"
+												data-toggle="collapse"
+												[attr.data-target]="'#collapseExample-Becas'"
+												aria-expanded="false"
+												aria-controls="collapseExample">
 												Becas
-												<button
-													id="btnbecados"
-													mat-raised-button
-													class="btn btn-primary text-white mr-3"
-													(click)="exportTable('becados',[])"
-												>
-													<i class="fe fe-printer"> Impr.</i>
-												</button>
+												</a>
+												
+												
 											</h4>
+											<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+												<button
+														id="btnbecados"
+														mat-raised-button
+														class="btn btn-primary text-white mr-3"
+														(click)="exportTable('becados',[])"
+													>
+														<i class="fe fe-printer"> Impr.</i>
+												</button>
+											</div>
 										</div>
-										<div class="table-responsive">
+										<div class="table-responsive" class="collapse" id="collapseExample-Becas">
 											<table id="becados" class="table table-sm table-nowrap card-table">
 												<thead>
 													<tr>
@@ -818,7 +845,18 @@
 										<div class="card-header">
 											<!-- Title -->
 											<h4 class="card-header-title">
+												<a class="btn btn-outline-primary"
+												type="button"
+												data-toggle="collapse"
+												[attr.data-target]="'#collapseExample-Retirados'"
+												aria-expanded="false"
+												aria-controls="collapseExample">
 												Retirados
+												</a>
+												
+												
+											</h4>
+											<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 												<button
 													id="btneliminados"
 													mat-raised-button
@@ -827,68 +865,65 @@
 												>
 													<i class="fe fe-printer"> Impr.</i>
 												</button>
-											</h4>
+											</div>
 										</div>
-										<div class="table-responsive">
+										<div class="table-responsive" class="collapse" id="collapseExample-Retirados">
 											<table id="eliminados" class="table table-sm table-nowrap card-table">
 												<thead>
 													<tr>
-														<th>Estudiante</th>
-														<th>Fecha</th>
-														<th>Curso</th>
-														<th>Beca</th>
-														<th>Matricula</th>
-														<th>Meses con Beca</th>
-														<th>Usado</th>
-														<th>Detalles de Pago</th>
+														
+														<th (click)="ordenarPor('apellidos')" style="cursor: pointer;">Apellidos</th>
+														<th (click)="ordenarPor('nombres')"style="cursor: pointer;">Nombres</th>
+														<th (click)="ordenarPor('f_desac')"style="cursor: pointer;">Fecha</th>
+														<th (click)="ordenarPor('curso')" style="cursor: pointer;">Curso</th>
+														<th >Beca</th>
+														<th >Matricula</th>
+														<th >Meses con Beca</th>
+														<th >Usado</th>
+														<th >Detalles de Pago</th>
 													</tr>
 												</thead>
-												<tbody class="font-size-base" *ngIf="penest != undefined">
-													<ng-container *ngFor="let pensiones of penest">
-														<ng-container
-															*ngIf="
-																(pensiones.anio_lectivo | date : 'dd/MM/yyyy') ==
-																	(fbeca | date : 'dd/MM/yyyy') &&
-																pensiones.idestudiante.estado == 'Desactivado' &&
-																(pensiones.anio_lectivo | date : 'dd/MM/yyyy') ==
-																	(pensiones.idestudiante.anio_desac | date : 'dd/MM/yyyy')
-															"
-														>
-															<tr>
+												<tbody class="font-size-base" *ngIf="retirados_arr">
+													<ng-container >
+														
+															<tr *ngFor="let pensiones of retirados_arr">
 																<th>
-																	{{ pensiones.idestudiante.nombres }}
-																	{{ pensiones.idestudiante.apellidos }}
+																	{{ pensiones?.idestudiante?.apellidos }}
+																</th>
+																<th>
+																	{{ pensiones?.idestudiante?.nombres }}
+																	
 																	<!--<span class="alert alert-danger" *ngIf="pensiones.idestudiante.estado=='Desactivado'">
 																	<i class="fe fe-info mr-1"></i>Eliminado
 																</span>-->
 																</th>
 																<th>
-																	{{ pensiones.idestudiante.f_desac | date : 'short' }}
+																	{{ pensiones?.idestudiante?.f_desac | date : 'short' }}
 																</th>
-																<th>{{ pensiones.curso }}{{ pensiones.paralelo }}</th>
+																<th>{{ pensiones?.curso }}{{ pensiones?.paralelo }}</th>
 																<th>
-																	<ng-container *ngIf="pensiones.val_beca != undefined">
-																		{{ pensiones.val_beca | number: '1.2'  }} (-{{ pensiones.desc_beca }}%)
+																	<ng-container *ngIf="pensiones?.val_beca != undefined">
+																		{{ pensiones?.val_beca | number: '1.2'  }} (-{{ pensiones?.desc_beca }}%)
 																	</ng-container>
-																	<ng-container *ngIf="pensiones.val_beca == undefined">
+																	<ng-container *ngIf="pensiones?.val_beca == undefined">
 																		No tiene Beca
 																	</ng-container>
 																</th>
 																<th>
-																	<span *ngIf="pensiones.matricula == 1"
+																	<span *ngIf="pensiones?.matricula == 1"
 																		><i class="fe fe-check">Pagado</i>
 																	</span>
 
-																	<span *ngIf="pensiones.matricula == 0"
+																	<span *ngIf="pensiones?.matricula == 0"
 																		><i class="fe fe-x">No Pagado</i></span
 																	>
 																</th>
 																<th>
-																	{{ pensiones.num_mes_beca }}
+																	{{ pensiones?.num_mes_beca }}
 																</th>
 																<th>
-																	<ng-container *ngIf="pensiones.val_beca != undefined">
-																		{{ pensiones.num_mes_beca - pensiones.num_mes_res }}
+																	<ng-container *ngIf="pensiones?.val_beca != undefined">
+																		{{ pensiones?.num_mes_beca - pensiones?.num_mes_res }}
 																	</ng-container>
 																</th>
 																<div class="table-responsive">
@@ -900,19 +935,23 @@
 																					<th>Factura</th>
 																				</tr>
 																			</thead>
-																			<tbody>
+																			<tbody >
 																				<ng-container *ngFor="let pagos of estudiantes">
-																					<tr *ngIf="pagos.idpension._id == pensiones._id">
-																						<th *ngIf="pagos.idpension._id == pensiones._id">
+																					<tr *ngIf="pagos.idpension._id == pensiones?._id">
+																						<th *ngIf="pagos.idpension._id == pensiones?._id">
 																							<span *ngIf="pagos.tipo == 0">
 																								Matricula: {{ pagos.valor | number: '1.2'  }}
 																							</span>
-																							<span *ngIf="pagos.tipo != 0">
+																							<span *ngIf="pagos.tipo > 0 && pagos.tipo < 20">
 																								Mes {{ pagos.tipo }}:
 																								{{ pagos.valor | number: '1.2'  }}
 																							</span>
+																							<span *ngIf="pagos.tipo > 25">
+																								Extra pagos:
+																								{{ pagos.valor | number: '1.2'  }}
+																							</span>
 																						</th>
-																						<th *ngIf="pagos.idpension._id == pensiones._id">
+																						<th *ngIf="pagos.idpension._id == pensiones?._id">
 																							<a
 																								style="cursor: pointer"
 																								[routerLink]="['/pagos/', pagos.pago._id]"
@@ -928,7 +967,7 @@
 																</div>
 															</tr>
 														</ng-container>
-													</ng-container>
+													
 												</tbody>
 											</table>
 										</div>
@@ -1036,7 +1075,7 @@
 						</ng-container>
 					</div>
 
-					<ng-container *ngIf="load_data_est == true && estudiantes.length != 0 && estudiantes.length > 0">
+					<ng-container *ngIf="load_data_est == true ">
 						<div class="card-body" style="cursor: progress">
 							<div class="row">
 								<div class="col-12 text-center">

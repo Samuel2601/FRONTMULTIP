@@ -27,7 +27,7 @@ export class IndexEstudiantesComponent implements OnInit, FlatfileMethods {
 	public token = localStorage.getItem('token');
 	public rol: any;
 	public page = 1;
-	public pageSize = 24;
+	public pageSize = 10;
 	public filtro = '';
 	public load_eliminados = false;
 	public load_data_est = true;
@@ -492,7 +492,7 @@ export class IndexEstudiantesComponent implements OnInit, FlatfileMethods {
 				$('#delete-' + id).modal('hide');
 				$('.modal-backdrop').removeClass('show');
 
-				this.recarga();
+				location.reload();
 			},
 			(error) => {
 				//////console.log(error);
@@ -540,6 +540,7 @@ export class IndexEstudiantesComponent implements OnInit, FlatfileMethods {
 		});
 		$('#delete-todo').modal('hide');
 		$('.modal-backdrop').removeClass('show');
+		location.reload();
 	}
 	select_todo() {
 		if (this.total == 1) {
@@ -593,6 +594,7 @@ export class IndexEstudiantesComponent implements OnInit, FlatfileMethods {
 		});
 		$('#activar-todo').modal('hide');
 		$('.modal-backdrop').removeClass('show');
+		location.reload();
 	}
 
 	activar(id: any) {
@@ -613,7 +615,7 @@ export class IndexEstudiantesComponent implements OnInit, FlatfileMethods {
 				$('#delete-' + id).modal('hide');
 				$('.modal-backdrop').removeClass('show');
 				this.mostrar_normales();
-				this.recarga();
+				location.reload();
 			},
 			(error) => {
 				//////console.log(error);

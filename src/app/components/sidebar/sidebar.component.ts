@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AdminService } from 'src/app/service/admin.service';
 import { GLOBAL } from 'src/app/service/GLOBAL';
 declare var iziToast: any;
+declare var $: any;
 @Component({
 	selector: 'app-sidebar',
 	templateUrl: './sidebar.component.html',
@@ -15,6 +16,7 @@ export class SidebarComponent implements OnInit {
 	public estado: any;
 	public aux: any;
 	public id: any;
+	public pagos: any = {};
 	public config: any = {};
 	public token = localStorage.getItem('token');
 	public url = GLOBAL.url;
@@ -32,18 +34,34 @@ export class SidebarComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		this.buscar();
 		//console.log(this.rol);
 		if (this.estado == 'Fuera' || this.estado == 'deshabilitado') {
 			this.logout();
 		}
 	}
+	
+	buscar(){
+		this._adminService.getapitoken().subscribe(response=>{
+			//console.log(response);
+			this._adminService.conec_api('dop_v1_92eb852578f7ce12f4ce3485c78aafe7932fcb5521cee629c0be18bc2a388750').subscribe(response=>{
+				console.log(response);
+				if(response){
+					this.pagos=response;
+					if(this.pagos.generated_at&& new Date(this.pagos.generated_at) &&parseFloat(this.pagos.account_balance)>0){
+						$('#staticBackdrop').modal('show');
+					}
+				}
+				
+				
+			});
+		})
+		
+	}
 	logout() {
 		//window.location.reload();
-		localStorage.removeItem('token');
-		localStorage.removeItem('_id');
-		localStorage.removeItem('user_data');
-		localStorage.removeItem('identity');
-		localStorage.removeItem('geo');
+		localStorage.clear();
+
 		this._router.navigate(['/']).then(() => {
 			window.location.reload();
 		});
